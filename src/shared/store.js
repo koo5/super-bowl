@@ -3,7 +3,7 @@ import api from '@/shared/api';
 const moduleShared = {
   state: {
     actors: [],
-    refreshInterval: 30,
+    refreshInterval: 5,
     isLoading: false,
     intervalId: null,
     currentPath: null

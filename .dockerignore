@@ -1,5 +1,6 @@
 .*
-Dockerfile
+container/Dockerfie
 docs/
 LICENCE
 *.md
+node_modules
