@@ -28,7 +28,7 @@ const cancelMessage = messageId => {
 
 const requeue = messageId => {
   const url = '/messages/requeue/' + messageId;
-  return axios.get(url);
+  return axios.post(url);
 };
 
 const getResult = messageId => {
