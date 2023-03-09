@@ -22,7 +22,7 @@ Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker);
 Vue.component('multiselect', Multiselect);
 Vue.component('json-viewer', JsonViewer);
 Vue.component('draggable', draggable);
-const router = new VueRouter({ routes, mode: 'history', linkExactActiveClass: 'bg-gray-900' });
+const router = new VueRouter({ routes, mode: 'history', linkExactActiveClass: 'border text-black font-bold' });
 
 Vue.filter('percentage', value => (value ? Math.round(value * 100) + '%' : ''));
 Vue.filter('datetime', value => (value ? format(value, 'y-MM-dd HH:mm') : ''));

@@ -1,11 +1,11 @@
 <template>
-  <nav class="bg-gray-800">
+  <nav class=" ">
     <div class="px-2 sm:px-6">
       <div class="relative flex items-center justify-between h-16 fixed">
         <div class="flex-1 flex items-baseline justify-center sm:items-stretch sm:justify-start">
           <a href="/"><img src="@/assets/img/logo.png" class="mr-2 logo" /></a>
           <a href="/">
-            <div class="flex-shrink-0 py-1 mr-2 text-lg text-white font-bold">SuperBowl</div>
+            <div class="flex-shrink-0 py-1 mr-2 text-lg font-bold">SuperBowl</div>
           </a>
           <div class="flex">
             <template v-for="(route, index) in routes">
@@ -20,8 +20,7 @@
                   text-sm
                   font-medium
                   leading-5
-                  text-white
-                  focus:outline-none focus:text-white
+                  focus:outline-2 focus:text-red
                   transition
                   duration-150
                   ease-in-out
@@ -48,12 +47,9 @@
             v-model="refreshInterval"
             class="
               inline-block
-              bg-gray-300
               mr-1
-              text-black
               leading-none
-              border-white
-              hover:border-transparent hover:text-teal-500 hover:bg-white
+              hover:border-transparent hover:text-teal-500 hover:bg-gray
               p-0
             "
           >
@@ -71,14 +67,12 @@
             class="
               inline-block
               bg-gray-300
-              rounded
               text-sm
               pt-1
               px-1
               py-1
               leading-none
-              text-white
-              hover:border-transparent hover:text-teal-500 hover:bg-white
+              hover:border-transparent hover:text-teal-500 hover:outline-1
             "
           >
             <img src="@/assets/img/refresh.svg" width="20rem" />
