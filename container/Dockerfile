@@ -26,3 +26,5 @@ ENV REMOULADE_WSGI_LOCATION=127.0.0.1:3031
 
 COPY container/nginx-remoulade.conf.template /etc/nginx/templates/default.conf.template
 COPY --from=build /build/dist /usr/share/nginx/html
+
+HEALTHCHECK CMD curl http://127.0.0.1:1238
