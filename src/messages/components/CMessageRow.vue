@@ -50,6 +50,12 @@
     </td>
     <td class="border px-4 py-2">
       <div class="inline-flex items-center" v-if="!message.compositionType">
+
+			        canCancel:{{canCancel}}
+                    isTopLevel:{{isTopLevel}}
+					message.status:{{message.status}}
+					message.type:{{message.type}}
+
         <button
           v-if="
             (message.status === 'Pending' || (message.type && message.status === 'Started')) &&
