@@ -27,4 +27,15 @@ ENV REMOULADE_WSGI_LOCATION=127.0.0.1:3031
 COPY container/nginx-remoulade.conf.template /etc/nginx/templates/default.conf.template
 COPY --from=build /build/dist /usr/share/nginx/html
 
-HEALTHCHECK CMD curl http://127.0.0.1:1238
+ENV HC="curl http://127.0.0.1:1238" 
+
+
+
+
+
+#start interval is the time between health checks during the start period. This option requires Docker Engine version 25.0 or later.
+USER root
+RUN mkdir /healthcheck
+RUN chown 1000:1000 /healthcheck
+USER 1000
+HEALTHCHECK --interval=2s --timeout=60s CMD { test -f /healthcheck/ok && echo -n "sleep.." && sleep 55 && echo -n "hc..>> " && /bin/sh -c '/bin/sh -c "$HC"' && echo -n " <<..hc passed." ; } || { echo -n "hc..>> " && echo -n "$HC" && echo -n " <<... " && /bin/sh -c '/bin/sh -c "$HC"' && echo -n " << first hc passed." && touch /healthcheck/ok && echo " flag stored." ; } 
