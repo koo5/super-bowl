@@ -36,7 +36,7 @@ const getResult = messageId => {
 };
 
 const cleanStates = args => {
-  const url = '/messages/states/';
+  const url = '/messages/states';
   return axiosInstance.delete(url, { data: args });
 };
 
