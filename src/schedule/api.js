@@ -1,11 +1,18 @@
 const axios = require('axios');
 
+// Create axios instance with default headers
+const axiosInstance = axios.create({
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
+
 function compareJobs(a, b) {
   return a.actorName > b.actorName ? 1 : -1;
 }
 
 const getJobs = () => {
-  return axios.get('scheduled/jobs').then(res => res.data.result.map(parseJob).sort(compareJobs));
+  return axiosInstance.get('scheduled/jobs').then(res => res.data.result.map(parseJob).sort(compareJobs));
 };
 
 const parseJob = rawJob => {
@@ -39,12 +46,12 @@ function formatJob(job) {
 }
 const deleteJob = job => {
   const url = '/scheduled/jobs/' + job.hash;
-  return axios.delete(url).then(res => res.data.result.map(parseJob).sort(compareJobs()));
+  return axiosInstance.delete(url).then(res => res.data.result.map(parseJob).sort(compareJobs()));
 };
 
 const addJob = job => {
   const url = '/scheduled/jobs';
-  return axios
+  return axiosInstance
     .post(url, formatJob(job))
     .then(res => res.data.result.map(parseJob).sort(compareJobs));
 };
@@ -53,7 +60,7 @@ const updateJobs = jobs => {
   const url = '/scheduled/jobs';
   const jobs_dict = {};
   jobs.forEach(job => (jobs_dict[job.hash] = formatJob(job)));
-  return axios
+  return axiosInstance
     .put(url, { jobs: jobs_dict })
     .then(res => res.data.result.map(parseJob).sort(compareJobs));
 };
