@@ -1,7 +1,7 @@
 ### First stage
 ### https://docs.docker.com/develop/develop-images/multistage-build/
 ### used as base for serve image
-FROM node:16 AS build
+FROM node:20@sha256:8789e1e0752d81088a085689c04fdb7a5b16e8102e353118a4b049bbf05db8ac AS build
 WORKDIR /build
 # Expose in path all node tools (ng, ngcc, bower, etc)
 ENV PATH=$PATH:/build/node_modules/.bin
@@ -14,11 +14,14 @@ COPY package-lock.json .
 RUN npm ci && rm -rf /root/.npm
 
 COPY . .
+# webpack 4 uses md4 via the OpenSSL API; OpenSSL 3 (Node 17+) removes it by default.
+# Legacy provider flag restores md4 for the build step only; does not affect runtime nginx image.
+ENV NODE_OPTIONS=--openssl-legacy-provider
 RUN npm run build
 
 ### Second stage
 ### Build "serve" image with nginx + dist from second stage
-FROM nginxinc/nginx-unprivileged:mainline AS serve
+FROM nginxinc/nginx-unprivileged:1.27-alpine@sha256:65e3e85dbaed8ba248841d9d58a899b6197106c23cb0ff1a132b7bfe0547e4c0 AS serve
 
 # Can be dynamicaly changed if your backend is located somewhere else (also takes unix sockets)
 ENV REMOULADE_BACKEND_LOCATION=http://127.0.0.1:5000
@@ -27,7 +30,7 @@ ENV REMOULADE_WSGI_LOCATION=127.0.0.1:3031
 COPY container/nginx-remoulade.conf.template /etc/nginx/templates/default.conf.template
 COPY --from=build /build/dist /usr/share/nginx/html
 
-ENV HC="curl http://127.0.0.1:1238" 
+ENV HC="curl --noproxy '*' http://127.0.0.1:1238"
 
 
 
