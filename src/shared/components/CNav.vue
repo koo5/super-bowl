@@ -77,6 +77,24 @@
           >
             <img src="@/assets/img/refresh.svg" width="20rem" />
           </a>
+          <a
+            @click="onClickCleanup"
+            href="#"
+            class="
+              inline-block
+              bg-red-300
+              text-sm
+              pt-1
+              px-1
+              py-1
+              ml-1
+              leading-none
+              hover:border-transparent hover:text-red-700 hover:outline-1
+            "
+            title="Clean up old completed jobs"
+          >
+            🗑️
+          </a>
         </div>
         <a href="https://wiremind.github.io/super-bowl/" target="_blank">
           <img src="@/assets/img/help.svg" width="20rem" class="ml-1" />
@@ -109,6 +127,26 @@ export default {
   methods: {
     onClickRefresh() {
       this.$store.dispatch('refresh');
+    },
+    onClickCleanup() {
+      // Prompt user for cleanup options
+      const choice = confirm(
+        'Clean up ALL job records?\n\n' +
+        'This will remove ALL completed and failed jobs from the database.\n' +
+        'This action cannot be undone and will clear the entire job history.'
+      );
+      
+      if (choice) {
+        // Clean all jobs by not specifying max_age (removes all completed states)
+        const cleanupArgs = {};
+        this.$store.dispatch('cleanStates', cleanupArgs)
+          .then(() => {
+            alert('Database cleanup completed! All job records have been cleared.');
+          })
+          .catch((error) => {
+            alert('Cleanup failed: ' + error.message);
+          });
+      }
     }
   },
   computed: {

@@ -147,12 +147,10 @@ const moduleMessages = {
     updateSortedColumn(context, column) {
       context.commit('setSortedColumn', column);
     },
-    cleanStates(context, minDateTime) {
-      const interval = Math.round(
-        new Date(Date.now()).getTime() - new Date(minDateTime).getTime() / 1000
-      );
-      const args = { max_age: interval };
-      api.cleanStates(args).then(() => this.updateCurrentPage());
+    cleanStates(context, args) {
+      return api.cleanStates(args).then(() => {
+        context.dispatch('refresh');
+      });
     }
   }
 };
