@@ -1,10 +1,9 @@
 import { parseMessages } from '@/messages/parsing';
-
-const axios = require('axios');
+import axiosInstance from '@/api/axios-config';
 
 const getArgsKwargs = id => {
   const url = '/messages/states/' + id;
-  return axios.get(url).then(res => parseArgs(res.data));
+  return axiosInstance.get(url).then(res => parseArgs(res.data));
 };
 
 const parseArgs = rawMessage => {
@@ -17,28 +16,28 @@ const parseArgs = rawMessage => {
 
 const getMessages = args => {
   const url = '/messages/states';
-  return axios
+  return axiosInstance
     .post(url, args)
     .then(res => ({ ...parseMessages(res.data.data), count: res.data.count }));
 };
 
 const cancelMessage = messageId => {
-  return axios.post('/messages/cancel/' + messageId);
+  return axiosInstance.post('/messages/cancel/' + messageId, {});
 };
 
 const requeue = messageId => {
   const url = '/messages/requeue/' + messageId;
-  return axios.post(url);
+  return axiosInstance.post(url, {});
 };
 
 const getResult = messageId => {
   const url = '/messages/result/' + messageId;
-  return axios.get(url).then(res => res.data.result);
+  return axiosInstance.get(url).then(res => res.data.result);
 };
 
 const cleanStates = args => {
   const url = '/messages/states/';
-  return axios.delete(url, args);
+  return axiosInstance.delete(url, { data: args });
 };
 
 export default {

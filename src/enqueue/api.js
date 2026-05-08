@@ -1,7 +1,14 @@
 const axios = require('axios');
 
+// Create axios instance with default headers
+const axiosInstance = axios.create({
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
+
 const enqueueMessage = message => {
-  return axios.post('/messages', formatMessage(message));
+  return axiosInstance.post('/messages', formatMessage(message));
 };
 
 const formatMessage = message => {
@@ -15,7 +22,7 @@ const formatMessage = message => {
 };
 
 const getOptions = () => {
-  return axios.get('/options').then(res => res.data.options);
+  return axiosInstance.get('/options').then(res => res.data.options);
 };
 
 export default {

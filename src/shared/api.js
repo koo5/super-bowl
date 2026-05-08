@@ -1,7 +1,14 @@
 const axios = require('axios');
 
+// Create axios instance with default headers
+const axiosInstance = axios.create({
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
+
 const getActors = () => {
-  return axios.get('/actors').then(res => res.data.result.map(parseActor));
+  return axiosInstance.get('/actors').then(res => res.data.result.map(parseActor));
 };
 
 const parseActor = rawActor => {
